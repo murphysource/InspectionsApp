@@ -1,0 +1,149 @@
+﻿@model InspectionsApp.Models.Inspection
+
+@{
+    ViewBag.Title = $"{(Model.InspectionId == 0 ? "Create New" : "Edit")} Inspection";
+}
+
+<h2>@(Model.InspectionId == 0 ? "Create New" : "Edit") Inspection</h2>
+
+@using (Html.BeginForm("EditInspection", "Inspection", FormMethod.Post, new { id = "inspectionForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        @if (Model.InspectionId != 0)
+        {
+            @Html.HiddenFor(model => model.InspectionId)
+            @Html.HiddenFor(model => model.UserId)
+            @Html.HiddenFor(model => model.InspectionDate)
+        }
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row mb-3">
+
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.SerialNumber, "Serial Number", htmlAttributes: new { @class = "form-label fw-bold text-end", style = "width: 150px;" })
+                <div class="col">
+                    @Html.EditorFor(model => model.SerialNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter or Scan Serial", @data_val = "true", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.SerialNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.AssemblyLine, "Assembly Line", htmlAttributes: new { @class = "form-label fw-bold text-end", style = "width: 150px;" })
+                <div class="col">
+                    @Html.DropDownListFor(model => model.AssemblyLineId, new SelectList(ViewBag.AssemblyLines, "Value", "Text"), "Select Assembly Line", htmlAttributes: new { @class = "form-select", required = "required" })
+                    @Html.ValidationMessageFor(model => model.AssemblyLineId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.Shift, "Shift", htmlAttributes: new { @class = "form-label fw-bold text-end", style = "width: 150px;" })
+                <div class="col">
+                    @Html.DropDownListFor(model => model.ShiftId, new SelectList(ViewBag.Shifts, "Value", "Text"), "Select Shift", htmlAttributes: new { @class = "form-select", required = "required" })
+                    @Html.ValidationMessageFor(model => model.ShiftId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.Area, "Area", htmlAttributes: new { @class = "form-label fw-bold text-end", style = "width: 150px;" })
+                <div class="col">
+                    @Html.DropDownListFor(model => model.AreaId, new SelectList(ViewBag.Areas, "Value", "Text"), "Select Area", htmlAttributes: new { @class = "form-select", required = "required" })
+                    @Html.ValidationMessageFor(model => model.AreaId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.AffectedPart, "Affected Part", htmlAttributes: new { @class = "form-label fw-bold text-end", style = "width: 150px;" })
+                <div class="col">
+                    @Html.DropDownListFor(model => model.AffectedPartId, new SelectList(ViewBag.AffectedParts, "Value", "Text"), "Select Affected Part", htmlAttributes: new { @class = "form-select", required = "required" })
+                    @Html.ValidationMessageFor(model => model.AffectedPartId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.Defect, "Defect", htmlAttributes: new { @class = "form-label fw-bold text-end", style = "width: 150px;" })
+                <div class="col">
+                    @Html.DropDownListFor(model => model.DefectId, new SelectList(ViewBag.Defects, "Value", "Text"), "Select Defect", htmlAttributes: new { @class = "form-select", required = "required" })
+                    @Html.ValidationMessageFor(model => model.DefectId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "form-label fw-bold text-end", style = "width: 150px;" })
+                <div class="col">
+                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Quantity", type = "number", @required = "required", tabindex = "-1" } })
+                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "form-label fw-bold text-end", style = "width: 150px;" })
+                <div class="col">
+                    @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control", placeholder = "Additional Information", tabindex = "-1" } })
+                    @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-10 offset-md-1">
+                    <button type="submit" class="btn btn-success me-5" id="btnSubmit" tabindex="-1">@(Model.InspectionId == 0 ? "Create" : "Update")</button>
+                    @*<button type="button" class="btn btn-danger cancelEdit" tabindex="-1">Cancel</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@if (Model.InspectionId != 0)
+{
+    using (Html.BeginForm("DeleteInspection", "Inspection", new { inspectionId = Model.InspectionId }))
+    {
+        <input onclick="return confirm('Confirm deletion of inspection.')" type="submit" value="Delete" class="btn btn-danger pull-right" />
+    }
+}
+
+
+<div class="row display nowrap" id="tableDiv">
+    @*@{
+            Html.RenderAction("ViewPersonalAssemblyTable", "Inspection", null);
+        }*@
+</div>
+<script>
+    $(document).ready(function () {
+        LoadTable();
+    });
+
+    function LoadTable() {
+        let l = $('#lineSelect').val();
+        let s = $('#shiftSelect').val();
+        $('#tableDiv').empty();
+        $('#tableDiv').append('<div class="spinnerdiv"><span class="text-primary fa fa-5x fa-spinner fa-spin center"></span></div>');
+        $('#tableDiv').load(`@Url.Action("ViewPersonalInspectionTable", "Inspection")`, function () {
+           $('#tableDiv').fadeIn();
+        });
+    }
+
+    $(document).on('change', '#AreaId', function () {
+        filterDropdown();
+    });
+
+    function filterDropdown() {
+       var areaId = $("#AreaId").val();
+       $("#AffectedPartId").empty();
+       $('#AffectedPartId').append($('<option></option>').text('Select Affected Part').val(''));
+       $.ajax({
+          url: '@Url.Action("GetFilteredValues", "Inspection")',
+          type: 'GET',
+           data: { areaId: areaId },
+          success: function (response) {
+              $.each(response.affectedPartValues, function (index, item) {
+                  $('#AffectedPartId').append($('<option></option>').val(item.Value).text(item.Text));
+              });
+          },
+          error: function () {
+              alert("Issue connecting to server. Please refresh.")
+          }
+       });
+    }
+
+
+</script>

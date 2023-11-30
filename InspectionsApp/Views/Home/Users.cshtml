@@ -1,0 +1,39 @@
+﻿@using InspectionsApp.ViewModels
+@using InspectionsApp.Models
+@model IEnumerable<Users>
+
+
+    <table id="userTable" class="table table-bordered table-striped" style="white-space:nowrap" width="100%">
+        <thead>
+            <tr>
+                <th>UserId</th>
+                <th>UserName</th>
+                <th>IsActive</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@(c.UserId)</td>
+                    <td>@(c.UserName)</td>
+                    <td>@(c.IsActive)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <script>
+        var table;
+        $(document).ready(function () {
+                table = $('#userTable').DataTable({
+                    "order": [[0, "desc"]],
+                    "scrollY": '500px',
+                    "scrollX": true,
+                    "sScrollXInner": "100%",
+                    "scrollCollapse": true,
+                    "paging": true,
+                    "lengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]],
+                });
+        });
+
+    </script>

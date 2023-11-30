@@ -1,0 +1,61 @@
+﻿@model InspectionsApp.ViewModels.InspectionVM
+
+@if (Model.Items.Count > 0)
+{
+    <table id="personalTable" class="table table-bordered table-striped" style="white-space:nowrap" width="100%">
+        <thead>
+            <tr>
+                <th>InspectionId</th>
+                <th>InspectionDate</th>
+                <th>SerialNumber</th>
+                <th>ShiftName</th>
+                <th>AssemblyLineName</th>
+                <th>AreaName</th>
+                <th>AffectedPartName</th>
+                <th>DefectName</th>
+                <th>Quantity</th>
+                <th>UserName</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model.Items)
+            {
+                <tr>
+                    <td>
+                        <a href="../Inspection/EditInspection?id=@(c.InspectionId)">@(c.InspectionId)</a>
+                    </td>
+                    <td data-sort="@(c.InspectionDate.ToString("yyyy-MM-dd HH:mm") ?? "-")">@c.InspectionDate.ToString("MM/dd/yyyy hh:mm:ss tt")</td>
+                    <td>@(c.SerialNumber)</td>
+                    <td>@(c.ShiftName)</td>
+                    <td>@(c.AssemblyLineName)</td>
+                    <td>@(c.AreaName)</td>
+                    <td>@(c.AffectedPartName)</td>
+                    <td>@(c.DefectName)</td>
+                    <td>@(c.Quantity)</td>
+                    <td>@(c.UserName)</td>
+                    <td>@(c.Comment)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <script>
+        var table;
+        $(document).ready(function () {
+                table = $('#personalTable').DataTable({
+                    "order": [[0, "desc"]],
+                    "scrollY": '500px',
+                    "scrollX": true,
+                    "sScrollXInner": "100%",
+                    "scrollCollapse": true,
+                    "paging": true,
+                    "lengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]],
+                });
+        });
+
+    </script>
+}
+else
+{
+    <h2>No inspections found</h2>
+}

@@ -1,0 +1,649 @@
+﻿@using InspectionsApp.Models
+@using InspectionsApp.ViewModels
+@model InspectionVM
+
+<div id="canvasDiv">
+    <canvas id="defectChart"></canvas>
+    <canvas id="areaChart"></canvas>
+    <canvas id="partChart"></canvas>
+    <canvas id="shiftChart"></canvas>
+    <canvas id="lineChart"></canvas>
+</div>
+
+<script type="text/javascript">
+    var defectProduction = [];
+    var areaProduction = [];
+    var partProduction = [];
+    var shiftProduction = [];
+    var lineProduction = [];
+
+    var footer = (tooltipItems) => {
+        let sum = 0;
+
+        tooltipItems.forEach(function (tooltipItem) {
+            sum += tooltipItem.parsed.y;
+        });
+        return 'Sum: ' + sum;
+    };
+
+    $(document).ready(function () {
+        var totalDefects = @(ViewBag.TotalDefects)
+
+        const colorMode = localStorage.getItem('theme');
+        if (colorMode == 'dark') {
+            Chart.defaults.color = '#ACBDB5';
+        }
+        else {
+            Chart.defaults.color = '#666666';
+        }
+
+    @foreach (var d in ViewBag.DefectProduction)
+    {
+        @:defectProduction.push({ x: decodeURIComponent('@d.Key'.replace(/&amp;/g, "&")), y: @d.Value});
+    }
+
+        defectProduction.sort(function (a, b) {
+            return b.y - a.y
+        });
+
+        // PARENT CHART
+        const defectData = {
+            datasets: [{
+                label: "Production",
+                data: defectProduction,
+                maxBarThickness: 33,
+                backgroundColor: [
+                    'rgba(40, 180, 99, 1)',
+                ],
+            }]
+        };
+        const defectConfig = {
+            type: 'bar',
+            data: defectData,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'x',
+                    intersect: true,
+                },
+                stacked: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            font: {
+                                weight: 'bold',
+                            },
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Number of Defects"
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        stacked: true,
+                        grace: "5%",
+                    },
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: "Total Defects: " + totalDefects,
+                        font: {
+                            size: 20
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.parsed.y;
+                            },
+                            footer: footer,
+                        },
+                    },
+                    legend: {
+                        onClick: (click, legendItem, legend) => {
+                            const datasets = legend.legendItems.map((dataset, index) => {
+                                return dataset.text;
+                            });
+                            const index = datasets.indexOf(legendItem.text);
+
+                            if (legend.chart.isDatasetVisible(index) === true) {
+                                legend.chart.hide(index);
+                            } else {
+                                legend.chart.show(index);
+                            }
+                        },
+                        labels: {
+                            generateLabels: (chart) => {
+                                let visibility = [];
+                                for (let i = 0; i < chart.data.datasets.length; i++) {
+                                    if (chart.isDatasetVisible(i) === true) {
+                                        if (colorMode == 'dark') {
+                                            visibility.push('rgba(172, 181, 189, 1)');
+                                        }
+                                        else {
+                                            visibility.push('rgba(102, 102, 102, 1)');
+                                        }
+                                    } else {
+                                        if (colorMode == 'dark') {
+                                            visibility.push('rgba(172, 181, 189, 0.5)');
+                                        }
+                                        else {
+                                            visibility.push('rgba(102, 102, 102, 0.5)');
+                                        }
+                                    }
+                                }
+
+                                return chart.data.datasets.map(
+                                    (dataset, index) => ({
+                                        text: dataset.label,
+                                        fillStyle: dataset.backgroundColor,
+                                        strokeStyle: dataset.borderColor,
+                                        fontColor: visibility[index]
+                                    })
+                                )
+                            },
+                            font: {
+                                weight: "bold",
+                                size: 14,
+                            },
+                        }
+                    },
+                }
+            },
+        }
+
+        // AREA CHART
+    @foreach (var d in ViewBag.AreaProduction)
+    {
+        @:areaProduction.push({ x: decodeURIComponent('@d.Key'.replace(/&amp;/g, "&")), y: @d.Value});
+    }
+        areaProduction.sort(function (a, b) {
+                return b.y - a.y
+            });
+        const areaData = {
+            datasets: [{
+                label: "Production",
+                data: areaProduction,
+                maxBarThickness: 33,
+                backgroundColor: [
+                    'rgba(40, 180, 99, 1)',
+                ],
+            }]
+        };
+
+        const areaConfig = {
+            type: 'bar',
+            data: areaData,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'x',
+                    intersect: true,
+                },
+                stacked: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            font: {
+                                weight: 'bold',
+                            },
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Number of Defects"
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        stacked: true,
+                        grace: "5%",
+                    },
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: "Defects by Area",// + total
+                        font: {
+                            size: 20
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.parsed.y;
+                            },
+                            footer: footer,
+                        },
+                    },
+                    legend: {
+                        onClick: (click, legendItem, legend) => {
+                            const datasets = legend.legendItems.map((dataset, index) => {
+                                return dataset.text;
+                            });
+                            const index = datasets.indexOf(legendItem.text);
+
+                            if (legend.chart.isDatasetVisible(index) === true) {
+                                legend.chart.hide(index);
+                            } else {
+                                legend.chart.show(index);
+                            }
+                        },
+                        labels: {
+                            generateLabels: (chart) => {
+                                let visibility = [];
+                                for (let i = 0; i < chart.data.datasets.length; i++) {
+                                    if (chart.isDatasetVisible(i) === true) {
+                                        if (colorMode == 'dark') {
+                                            visibility.push('rgba(172, 181, 189, 1)');
+                                        }
+                                        else {
+                                            visibility.push('rgba(102, 102, 102, 1)');
+                                        }
+                                    } else {
+                                        if (colorMode == 'dark') {
+                                            visibility.push('rgba(172, 181, 189, 0.5)');
+                                        }
+                                        else {
+                                            visibility.push('rgba(102, 102, 102, 0.5)');
+                                        }
+                                    }
+                                }
+
+                                return chart.data.datasets.map(
+                                    (dataset, index) => ({
+                                        text: dataset.label,
+                                        fillStyle: dataset.backgroundColor,
+                                        strokeStyle: dataset.borderColor,
+                                        fontColor: visibility[index]
+                                    })
+                                )
+                            },
+                            font: {
+                                weight: "bold",
+                                size: 14,
+                            },
+                        }
+                    },
+                }
+            },
+        }
+
+        // PART CHART
+    @foreach (var d in ViewBag.PartProduction)
+    {
+        @:partProduction.push({ x: decodeURIComponent('@d.Key'.replace(/&amp;/g, "&")), y: @d.Value});
+    }
+        partProduction.sort(function (a, b) {
+                return b.y - a.y
+            });
+        const partData = {
+            datasets: [{
+                label: "Production",
+                data: partProduction,
+                maxBarThickness: 33,
+                backgroundColor: [
+                    'rgba(40, 180, 99, 1)',
+                ],
+            }]
+        };
+
+        const partConfig = {
+            type: 'bar',
+            data: partData,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'x',
+                    intersect: true,
+                },
+                stacked: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            font: {
+                                weight: 'bold',
+                            },
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Number of Defects"
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        stacked: true,
+                        grace: "5%",
+                    },
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: "Defects by Part",
+                        font: {
+                            size: 20
+                        }
+                    },
+                    legend: {
+                        onClick: (click, legendItem, legend) => {
+                            const datasets = legend.legendItems.map((dataset, index) => {
+                                return dataset.text;
+                            });
+                            const index = datasets.indexOf(legendItem.text);
+
+                            if (legend.chart.isDatasetVisible(index) === true) {
+                                legend.chart.hide(index);
+                            } else {
+                                legend.chart.show(index);
+                            }
+                        },
+                        labels: {
+                            generateLabels: (chart) => {
+                                let visibility = [];
+                                for (let i = 0; i < chart.data.datasets.length; i++) {
+                                    if (chart.isDatasetVisible(i) === true) {
+                                        if (colorMode == 'dark') {
+                                            visibility.push('rgba(172, 181, 189, 1)');
+                                        }
+                                        else {
+                                            visibility.push('rgba(102, 102, 102, 1)');
+                                        }
+                                    } else {
+                                        if (colorMode == 'dark') {
+                                            visibility.push('rgba(172, 181, 189, 0.5)');
+                                        }
+                                        else {
+                                            visibility.push('rgba(102, 102, 102, 0.5)');
+                                        }
+                                    }
+                                }
+
+                                return chart.data.datasets.map(
+                                    (dataset, index) => ({
+                                        text: dataset.label,
+                                        fillStyle: dataset.backgroundColor,
+                                        strokeStyle: dataset.borderColor,
+                                        fontColor: visibility[index]
+                                    })
+                                )
+                            },
+                            font: {
+                                weight: "bold",
+                                size: 14,
+                            },
+                        }
+                    },
+                }
+            },
+        }
+
+        // SHIFT CHART
+    @foreach (var d in ViewBag.ShiftProduction)
+    {
+        @:shiftProduction.push({ x: decodeURIComponent('@d.Key'), y: @d.Value});
+    }
+        shiftProduction.sort(function (a, b) {
+            /* return a.x - b.x*/
+            //extract integer, else match whole words
+            var aSort = a.x.match(/\d+|\b\w+\b/);
+            var bSort = b.x.match(/\d+|\b\w+\b/);
+            return aSort[0] - bSort[0]
+        });
+        const shiftData = {
+            datasets: [{
+                label: "Production",
+                data: shiftProduction,
+                maxBarThickness: 33,
+                backgroundColor: [
+                    'rgba(40, 180, 99, 1)',
+                ],
+            }]
+        };
+
+        const shiftConfig = {
+            type: 'bar',
+            data: shiftData,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'x',
+                    intersect: true,
+                },
+                stacked: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            font: {
+                                weight: 'bold',
+                            },
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Number of Defects"
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        stacked: true,
+                        grace: "5%",
+                    },
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: "Defects by Shift",// + total
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        onClick: (click, legendItem, legend) => {
+                            const datasets = legend.legendItems.map((dataset, index) => {
+                                return dataset.text;
+                            });
+                            const index = datasets.indexOf(legendItem.text);
+
+                            if (legend.chart.isDatasetVisible(index) === true) {
+                                legend.chart.hide(index);
+                            } else {
+                                legend.chart.show(index);
+                            }
+                        },
+                        labels: {
+                            generateLabels: (chart) => {
+                                let visibility = [];
+                                for (let i = 0; i < chart.data.datasets.length; i++) {
+                                    if (chart.isDatasetVisible(i) === true) {
+                                        if (colorMode == 'dark') {
+                                            visibility.push('rgba(172, 181, 189, 1)');
+                                        }
+                                        else {
+                                            visibility.push('rgba(102, 102, 102, 1)');
+                                        }
+                                    } else {
+                                        if (colorMode == 'dark') {
+                                            visibility.push('rgba(172, 181, 189, 0.5)');
+                                        }
+                                        else {
+                                            visibility.push('rgba(102, 102, 102, 0.5)');
+                                        }
+                                    }
+                                }
+
+                                return chart.data.datasets.map(
+                                    (dataset, index) => ({
+                                        text: dataset.label,
+                                        fillStyle: dataset.backgroundColor,
+                                        strokeStyle: dataset.borderColor,
+                                        fontColor: visibility[index]
+                                    })
+                                )
+                            },
+                            font: {
+                                weight: "bold",
+                                size: 14,
+                            },
+                        }
+                    },
+                }
+            },
+        }
+
+        // LINE CHART
+    @foreach (var d in ViewBag.LineProduction)
+    {
+        @:lineProduction.push({ x: decodeURIComponent('@d.Key'.replace(/&amp;/g, "&")), y: @d.Value});
+    }
+        lineProduction.sort(function (a, b) {
+                return a.x - b.x
+            });
+      
+        const lineData = {
+            datasets: [{
+                label: "Production",
+                data: lineProduction,
+                maxBarThickness: 33,
+                backgroundColor: [
+                    'rgba(40, 180, 99, 1)',
+                ],
+            }]
+        };
+
+        const lineConfig = {
+            type: 'bar',
+            data: lineData,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'x',
+                    intersect: true,
+                },
+                stacked: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            font: {
+                                weight: 'bold',
+                            },
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Number of Defects"
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        stacked: true,
+                        grace: "5%",
+                    },
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: "Defects by Line",
+                        font: {
+                            size: 20
+                        }
+                    },
+                    legend: {
+                        onClick: (click, legendItem, legend) => {
+                            const datasets = legend.legendItems.map((dataset, index) => {
+                                return dataset.text;
+                            });
+                            const index = datasets.indexOf(legendItem.text);
+
+                            if (legend.chart.isDatasetVisible(index) === true) {
+                                legend.chart.hide(index);
+                            } else {
+                                legend.chart.show(index);
+                            }
+                        },
+                        labels: {
+                            generateLabels: (chart) => {
+                                let visibility = [];
+                                for (let i = 0; i < chart.data.datasets.length; i++) {
+                                    if (chart.isDatasetVisible(i) === true) {
+                                        if (colorMode == 'dark') {
+                                            visibility.push('rgba(172, 181, 189, 1)');
+                                        }
+                                        else {
+                                            visibility.push('rgba(102, 102, 102, 1)');
+                                        }
+                                    } else {
+                                        if (colorMode == 'dark') {
+                                            visibility.push('rgba(172, 181, 189, 0.5)');
+                                        }
+                                        else {
+                                            visibility.push('rgba(102, 102, 102, 0.5)');
+                                        }
+                                    }
+                                }
+
+                                return chart.data.datasets.map(
+                                    (dataset, index) => ({
+                                        text: dataset.label,
+                                        fillStyle: dataset.backgroundColor,
+                                        strokeStyle: dataset.borderColor,
+                                        fontColor: visibility[index]
+                                    })
+                                )
+                            },
+                            font: {
+                                weight: "bold",
+                                size: 14,
+                            },
+                        }
+                    },
+                }
+            },
+        }
+
+        // CTX
+
+        const defectCtx = document.getElementById('defectChart');
+        const defectChart = new Chart(
+            defectCtx,
+            defectConfig
+        );
+
+        const areaCtx = document.getElementById('areaChart');
+        const areaChart = new Chart(
+            areaCtx,
+            areaConfig
+        );
+
+        const partCtx = document.getElementById('partChart');
+        const partChart = new Chart(
+            partCtx,
+            partConfig
+        );
+
+        const shiftCtx = document.getElementById('shiftChart');
+        const shiftChart = new Chart(
+            shiftCtx,
+            shiftConfig
+        );
+
+        const lineCtx = document.getElementById('lineChart');
+        const lineChart = new Chart(
+            lineCtx,
+            lineConfig
+        );
+    });
+</script>

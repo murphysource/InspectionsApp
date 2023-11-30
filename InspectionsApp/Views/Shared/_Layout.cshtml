@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - End of Line Inspections</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <script type="text/javascript">
+        (() => {
+            'use strict'
+
+            const storedTheme = localStorage.getItem('theme')
+
+            const getPreferredTheme = () => {
+                if (storedTheme) {
+                    return storedTheme
+                }
+            }
+
+            const setTheme = function (theme) {
+                document.documentElement.setAttribute('data-bs-theme', theme)
+            }
+
+            setTheme(getPreferredTheme())
+        })()
+    </script>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-body-tertiary">
+        <div class="container">
+            @Html.ActionLink("End of Line Inspections", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li>@Html.ActionLink("New Inspection", "EditInspection", "Inspection", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Table", "InspectionTable", "Inspection", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle nav-link" href="#" role="button" data-bs-toggle="dropdown">
+                            <span>Theme</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button type="button" class="dropdown-item" width="50" data-bs-theme-value="light"><span class="fa fa-sun-o"></span></button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon-o"></span></button>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink(User.Identity.Name, "Users", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - End of Line Inspections</p>
+        </footer>
+    </div>
+
+  
+    <script type="text/javascript">
+     (() => {
+         'use strict'
+
+         const storedTheme = localStorage.getItem('theme')
+         //if (storedTheme == 'dark') {
+         //    document.getElementById("Logo").src = "/Content/Logo.png";
+         //}
+
+         const getPreferredTheme = () => {
+             if (storedTheme) {
+                 return storedTheme
+             }
+
+             return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+         }
+
+         const setTheme = function (theme) {
+             document.documentElement.setAttribute('data-bs-theme', theme)
+         }
+
+         setTheme(getPreferredTheme())
+
+         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+             if (storedTheme !== 'light' || storedTheme !== 'dark') {
+                 setTheme(getPreferredTheme())
+             }
+         })
+
+         window.addEventListener('DOMContentLoaded', () => {
+             document.querySelectorAll('[data-bs-theme-value]')
+                 .forEach(toggle => {
+                     toggle.addEventListener('click', () => {
+                         const theme = toggle.getAttribute('data-bs-theme-value')
+                         localStorage.setItem('theme', theme)
+                         //if (theme == 'dark') {
+                         //    document.getElementById("Logo").src = "/Content/Logo.png";
+                         //}
+                         //else {
+                         //    document.getElementById("Logo").src = "/Content/LogoLight.png";
+                         //}
+                         setTheme(theme)
+                     })
+                 })
+         })
+     })()
+    </script>
+</body>
+</html>

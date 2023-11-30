@@ -1,0 +1,155 @@
+﻿@using InspectionsApp.Models
+@using InspectionsApp.ViewModels
+@model InspectionVM
+
+@{
+    ViewBag.Title = "Table";
+}
+
+@using (Html.BeginForm("DownloadInspectionReport", "Inspection", FormMethod.Post, new { id = "downloadForm" }))
+{
+
+    <div class="roundBox container">
+        <div class="row" style="margin: 5px;">
+            <div class="col">
+                @Html.Label("Shift", htmlAttributes: new { @class = "text-end fw-bold control-label" })
+                @Html.DropDownList("Shift", new SelectList(ViewBag.Shifts, "Value", "Text"), "All", htmlAttributes: new
+                {
+                    @class = "form-control form-select data-filter",
+                    id = "shiftDrop",
+                })
+            </div>
+            <div class="col">
+                @Html.Label("Assembly Line", htmlAttributes: new { @class = "text-end fw-bold control-label" })
+                @Html.DropDownList("AssemblyLine", new SelectList(ViewBag.AssemblyLines, "Value", "Text"), "All", htmlAttributes: new
+                {
+                    @class = "form-control form-select data-filter",
+                    id = "lineDrop",
+                })
+            </div>
+            <div class="col">
+                @Html.Label("Area", htmlAttributes: new { @class = "text-end fw-bold control-label" })
+                @Html.DropDownList("Area", new SelectList(ViewBag.Areas, "Value", "Text"), "All", htmlAttributes: new
+                {
+                    @class = "form-control form-select data-filter",
+                    id = "areaDrop",
+                })
+            </div>
+            <div class="col">
+                @Html.Label("Part", htmlAttributes: new { @class = "text-end fw-bold control-label" })
+                @Html.DropDownList("AffectedPart", new SelectList(ViewBag.AffectedParts, "Value", "Text"), "All", htmlAttributes: new
+                {
+                    @class = "form-control form-select data-filter",
+                    id = "partDrop",
+                })
+            </div>
+            <div class="col">
+                @Html.Label("Defect", htmlAttributes: new { @class = "text-end fw-bold control-label" })
+                @Html.DropDownList("Defect", new SelectList(ViewBag.Defects, "Value", "Text"), "All", htmlAttributes: new
+                {
+                    @class = "form-control form-select data-filter",
+                    id = "defectDrop",
+                })
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="row center">
+        <div class="col-auto" style="width:400px;">
+            <input type="text" style="max-width:400px;" name="reportrange" id="reportrange"
+                   class="form-select form-control" />
+            <input type="hidden" id="dateStart" name="dateStart" value="" />
+            <input type="hidden" id="dateEnd" name="dateEnd" value="" />
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary" id="DownloadReport" tabindex="0" type="button">Download Report</button>
+        </div>
+    </div>
+}
+
+<div id="chartDiv">
+</div>
+<div class="row display nowrap" id="tableDiv" style="margin-bottom:5px">
+    @{
+        Html.RenderAction("ViewInspectionTable", "Inspection", null);
+    }
+</div>
+
+<script type="text/javascript">
+    var DateTime = luxon.DateTime;
+    var dateNow = DateTime.now().setZone('America/New_York');
+    var dateStart = dateNow.set({ hour: 23, minute: 0, second: 0, millisecond: 0 }).minus({ days: 1 }).toJSDate();
+    var dateEnd = dateNow.set({ hour: 22, minute: 59, second: 59 }).toJSDate();
+    //var savedTimes;
+
+
+    $(document).ready(function () {
+        LoadChart();
+    });
+
+    $('#reportrange').daterangepicker({
+        "showDropdowns": true,
+        "minYear": 2017,
+        "timePicker": true,
+        locale: {
+            format: 'MM/DD/YYYY hh:mm a'
+        },
+        ranges: {
+            'Today': [moment().set({ 'hour': 22, 'minute': 0, 'second': 0 }).subtract(1, 'days'), moment().set({ 'hour': 21, 'minute': 59, 'second': 59 })],
+            'Yesterday': [moment().set({ 'hour': 22, 'minute': 0, 'second': 0 }).subtract(2, 'days'), moment().set({ 'hour': 21, 'minute': 59, 'second': 59 }).subtract(1, 'days')],
+            'Third Shift': [moment().set({ 'hour': 22, 'minute': 0, 'second': 0 }).subtract(1, 'days'), moment().set({ 'hour': 5, 'minute': 59, 'second': 59 })],
+            'This Year': [moment().startOf('year'), moment().endOf('year')],
+            'Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+            'Last 7 Days': [moment().startOf('day').subtract(6, 'days'), moment().endOf('day')],
+            'Last 30 Days': [moment().startOf('day').subtract(29, 'days'), moment().endOf('day')],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+        },
+        "alwaysShowCalendars": true,
+        "startDate": moment().startOf('day'),
+        "endDate": moment().endOf('day'),
+    });
+
+    $('#DownloadReport').on('click', function () {
+        $("#dateStart").val($("#reportrange").data('daterangepicker').startDate.format('MM/DD/YYYY hh:mm a'));
+        $("#dateEnd").val($("#reportrange").data('daterangepicker').endDate.format('MM/DD/YYYY hh:mm a'));
+        $('#downloadForm').submit();
+    });
+
+    $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
+        LoadChart();
+        $('#tableDiv').empty();
+        $('#tableDiv').append('<div class="spinnerdiv"><span class="text-primary fa fa-5x fa-spinner fa-spin center"></span></div>');
+        $('#tableDiv').load(`@Url.Action("ViewInspectionTable", "Inspection", null)`, function () {
+            $('#tableDiv').fadeIn();
+        });
+    });
+
+    $(document).on('change', '.data-filter', function () {
+        LoadChart();
+        $('#tableDiv').empty();
+        $('#tableDiv').append('<div class="spinnerdiv"><span class="text-primary fa fa-5x fa-spinner fa-spin center"></span></div>');
+        $('#tableDiv').load(`@Url.Action("ViewInspectionTable", "Inspection", null)`, function () {
+            $('#tableDiv').fadeIn();
+        });
+    });
+
+    function LoadChart() {
+        var startDate = $("#reportrange").data('daterangepicker').startDate.format('MM/DD/YYYY hh:mm a');
+        var endDate = $("#reportrange").data('daterangepicker').endDate.format('MM/DD/YYYY hh:mm a');
+        var userStartDate = new Date(startDate);
+        var userEndDate = new Date(endDate);
+        let t = DateTime.fromJSDate(userStartDate).toFormat('MM/dd/yyyy%20TT');
+        let f = DateTime.fromJSDate(userEndDate).toFormat('MM/dd/yyyy%20TT')
+        let s = $('#shiftDrop').val();
+        let al = $('#lineDrop').val();
+        let a = $('#areaDrop').val();
+        let ap = $('#partDrop').val();
+        let d = $('#defectDrop').val();
+        $('#chartDiv').empty();
+        $('#chartDiv').append('<div class="spinnerdiv"><span class="text-primary fa fa-5x fa-spinner fa-spin center"></span></div>');
+        $('#chartDiv').load(`@Url.Action("InspectionChart", "Inspection", null)?dateStart=${t}&dateEnd=${f}&shiftId=${s}&assemblyLineId=${al}&areaId=${a}&affectedPartId=${ap}&defectId=${d}`, function () {
+            $('#chartDiv').fadeIn();
+        });
+    }
+</script>

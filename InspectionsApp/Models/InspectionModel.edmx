@@ -1,0 +1,630 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="db_a9ffb8_murphysourceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AffectedPart">
+          <Key>
+            <PropertyRef Name="AffectedPartId" />
+          </Key>
+          <Property Name="AffectedPartId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AffectedPartName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="AreaId" Type="int" />
+        </EntityType>
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="AreaId" />
+          </Key>
+          <Property Name="AreaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AreaName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AssemblyLineId" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AssemblyLine">
+          <Key>
+            <PropertyRef Name="AssemblyLineId" />
+          </Key>
+          <Property Name="AssemblyLineId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssemblyLineName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Defect">
+          <Key>
+            <PropertyRef Name="DefectId" />
+          </Key>
+          <Property Name="DefectId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DefectName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Inspection">
+          <Key>
+            <PropertyRef Name="InspectionId" />
+          </Key>
+          <Property Name="InspectionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InspectionDate" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="AffectedPartId" Type="int" Nullable="false" />
+          <Property Name="ShiftId" Type="int" Nullable="false" />
+          <Property Name="AreaId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="200" />
+          <Property Name="SerialNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AssemblyLineId" Type="int" Nullable="false" />
+          <Property Name="DefectId" Type="int" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Shift">
+          <Key>
+            <PropertyRef Name="ShiftId" />
+          </Key>
+          <Property Name="ShiftId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShiftName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'db_a9ffb8_murphysource.dbo.InspectionSearch' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="InspectionSearch">
+          <Key>
+            <PropertyRef Name="InspectionId" />
+            <PropertyRef Name="InspectionDate" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ShiftId" />
+            <PropertyRef Name="ShiftName" />
+            <PropertyRef Name="AssemblyLineName" />
+            <PropertyRef Name="AssemblyLineId" />
+            <PropertyRef Name="AreaName" />
+            <PropertyRef Name="AreaId" />
+            <PropertyRef Name="DefectName" />
+            <PropertyRef Name="DefectId" />
+            <PropertyRef Name="AffectedPartName" />
+            <PropertyRef Name="AffectedPartId" />
+            <PropertyRef Name="SerialNumber" />
+            <PropertyRef Name="Quantity" />
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="InspectionId" Type="int" Nullable="false" />
+          <Property Name="InspectionDate" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ShiftId" Type="int" Nullable="false" />
+          <Property Name="ShiftName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AssemblyLineName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AssemblyLineId" Type="int" Nullable="false" />
+          <Property Name="AreaName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AreaId" Type="int" Nullable="false" />
+          <Property Name="DefectName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DefectId" Type="int" Nullable="false" />
+          <Property Name="AffectedPartName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AffectedPartId" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="200" />
+          <Property Name="SerialNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AffectedPart_Area">
+          <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
+          <End Role="AffectedPart" Type="Self.AffectedPart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="AreaId" />
+            </Principal>
+            <Dependent Role="AffectedPart">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inspection_AffectedPart">
+          <End Role="AffectedPart" Type="Self.AffectedPart" Multiplicity="1" />
+          <End Role="Inspection" Type="Self.Inspection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AffectedPart">
+              <PropertyRef Name="AffectedPartId" />
+            </Principal>
+            <Dependent Role="Inspection">
+              <PropertyRef Name="AffectedPartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inspection_Area">
+          <End Role="Area" Type="Self.Area" Multiplicity="1" />
+          <End Role="Inspection" Type="Self.Inspection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="AreaId" />
+            </Principal>
+            <Dependent Role="Inspection">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inspection_AssemblyLine">
+          <End Role="AssemblyLine" Type="Self.AssemblyLine" Multiplicity="1" />
+          <End Role="Inspection" Type="Self.Inspection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssemblyLine">
+              <PropertyRef Name="AssemblyLineId" />
+            </Principal>
+            <Dependent Role="Inspection">
+              <PropertyRef Name="AssemblyLineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inspection_Defect">
+          <End Role="Defect" Type="Self.Defect" Multiplicity="1" />
+          <End Role="Inspection" Type="Self.Inspection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Defect">
+              <PropertyRef Name="DefectId" />
+            </Principal>
+            <Dependent Role="Inspection">
+              <PropertyRef Name="DefectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inspection_Shift">
+          <End Role="Shift" Type="Self.Shift" Multiplicity="1" />
+          <End Role="Inspection" Type="Self.Inspection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shift">
+              <PropertyRef Name="ShiftId" />
+            </Principal>
+            <Dependent Role="Inspection">
+              <PropertyRef Name="ShiftId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inspection_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Inspection" Type="Self.Inspection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Inspection">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="db_a9ffb8_murphysourceModelStoreContainer">
+          <EntitySet Name="AffectedPart" EntityType="Self.AffectedPart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Area" EntityType="Self.Area" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssemblyLine" EntityType="Self.AssemblyLine" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Defect" EntityType="Self.Defect" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Inspection" EntityType="Self.Inspection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InspectionSearch" EntityType="Self.InspectionSearch" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [InspectionSearch].[InspectionId] AS [InspectionId], 
+    [InspectionSearch].[InspectionDate] AS [InspectionDate], 
+    [InspectionSearch].[UserId] AS [UserId], 
+    [InspectionSearch].[ShiftId] AS [ShiftId], 
+    [InspectionSearch].[ShiftName] AS [ShiftName], 
+    [InspectionSearch].[AssemblyLineName] AS [AssemblyLineName], 
+    [InspectionSearch].[AssemblyLineId] AS [AssemblyLineId], 
+    [InspectionSearch].[AreaName] AS [AreaName], 
+    [InspectionSearch].[AreaId] AS [AreaId], 
+    [InspectionSearch].[DefectName] AS [DefectName], 
+    [InspectionSearch].[DefectId] AS [DefectId], 
+    [InspectionSearch].[AffectedPartName] AS [AffectedPartName], 
+    [InspectionSearch].[AffectedPartId] AS [AffectedPartId], 
+    [InspectionSearch].[Comment] AS [Comment], 
+    [InspectionSearch].[SerialNumber] AS [SerialNumber], 
+    [InspectionSearch].[Quantity] AS [Quantity], 
+    [InspectionSearch].[LastModified] AS [LastModified], 
+    [InspectionSearch].[UserName] AS [UserName]
+    FROM [dbo].[InspectionSearch] AS [InspectionSearch]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_AffectedPart_Area" Association="Self.FK_AffectedPart_Area">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="AffectedPart" EntitySet="AffectedPart" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inspection_AffectedPart" Association="Self.FK_Inspection_AffectedPart">
+            <End Role="AffectedPart" EntitySet="AffectedPart" />
+            <End Role="Inspection" EntitySet="Inspection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inspection_Area" Association="Self.FK_Inspection_Area">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="Inspection" EntitySet="Inspection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inspection_AssemblyLine" Association="Self.FK_Inspection_AssemblyLine">
+            <End Role="AssemblyLine" EntitySet="AssemblyLine" />
+            <End Role="Inspection" EntitySet="Inspection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inspection_Defect" Association="Self.FK_Inspection_Defect">
+            <End Role="Defect" EntitySet="Defect" />
+            <End Role="Inspection" EntitySet="Inspection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inspection_Shift" Association="Self.FK_Inspection_Shift">
+            <End Role="Shift" EntitySet="Shift" />
+            <End Role="Inspection" EntitySet="Inspection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inspection_User" Association="Self.FK_Inspection_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Inspection" EntitySet="Inspection" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="db_a9ffb8_murphysourceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="db_a9ffb8_murphysourceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AffectedParts" EntityType="db_a9ffb8_murphysourceModel.AffectedPart" />
+          <EntitySet Name="Areas" EntityType="db_a9ffb8_murphysourceModel.Area" />
+          <EntitySet Name="AssemblyLines" EntityType="db_a9ffb8_murphysourceModel.AssemblyLine" />
+          <EntitySet Name="Defects" EntityType="db_a9ffb8_murphysourceModel.Defect" />
+          <EntitySet Name="Inspections" EntityType="db_a9ffb8_murphysourceModel.Inspection" />
+          <EntitySet Name="Shifts" EntityType="db_a9ffb8_murphysourceModel.Shift" />
+          <EntitySet Name="Users" EntityType="db_a9ffb8_murphysourceModel.Users" />
+          <EntitySet Name="InspectionSearches" EntityType="db_a9ffb8_murphysourceModel.InspectionSearch" />
+          <AssociationSet Name="FK_AffectedPart_Area" Association="db_a9ffb8_murphysourceModel.FK_AffectedPart_Area">
+            <End Role="Area" EntitySet="Areas" />
+            <End Role="AffectedPart" EntitySet="AffectedParts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inspection_AffectedPart" Association="db_a9ffb8_murphysourceModel.FK_Inspection_AffectedPart">
+            <End Role="AffectedPart" EntitySet="AffectedParts" />
+            <End Role="Inspection" EntitySet="Inspections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inspection_Area" Association="db_a9ffb8_murphysourceModel.FK_Inspection_Area">
+            <End Role="Area" EntitySet="Areas" />
+            <End Role="Inspection" EntitySet="Inspections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inspection_AssemblyLine" Association="db_a9ffb8_murphysourceModel.FK_Inspection_AssemblyLine">
+            <End Role="AssemblyLine" EntitySet="AssemblyLines" />
+            <End Role="Inspection" EntitySet="Inspections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inspection_Defect" Association="db_a9ffb8_murphysourceModel.FK_Inspection_Defect">
+            <End Role="Defect" EntitySet="Defects" />
+            <End Role="Inspection" EntitySet="Inspections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inspection_Shift" Association="db_a9ffb8_murphysourceModel.FK_Inspection_Shift">
+            <End Role="Shift" EntitySet="Shifts" />
+            <End Role="Inspection" EntitySet="Inspections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inspection_User" Association="db_a9ffb8_murphysourceModel.FK_Inspection_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Inspection" EntitySet="Inspections" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AffectedPart">
+          <Key>
+            <PropertyRef Name="AffectedPartId" />
+          </Key>
+          <Property Name="AffectedPartId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AffectedPartName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="AreaId" Type="Int32" />
+          <NavigationProperty Name="Area" Relationship="db_a9ffb8_murphysourceModel.FK_AffectedPart_Area" FromRole="AffectedPart" ToRole="Area" />
+          <NavigationProperty Name="Inspections" Relationship="db_a9ffb8_murphysourceModel.FK_Inspection_AffectedPart" FromRole="AffectedPart" ToRole="Inspection" />
+        </EntityType>
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="AreaId" />
+          </Key>
+          <Property Name="AreaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AreaName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AssemblyLineId" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AffectedParts" Relationship="db_a9ffb8_murphysourceModel.FK_AffectedPart_Area" FromRole="Area" ToRole="AffectedPart" />
+          <NavigationProperty Name="Inspections" Relationship="db_a9ffb8_murphysourceModel.FK_Inspection_Area" FromRole="Area" ToRole="Inspection" />
+        </EntityType>
+        <EntityType Name="AssemblyLine">
+          <Key>
+            <PropertyRef Name="AssemblyLineId" />
+          </Key>
+          <Property Name="AssemblyLineId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssemblyLineName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Inspections" Relationship="db_a9ffb8_murphysourceModel.FK_Inspection_AssemblyLine" FromRole="AssemblyLine" ToRole="Inspection" />
+        </EntityType>
+        <EntityType Name="Defect">
+          <Key>
+            <PropertyRef Name="DefectId" />
+          </Key>
+          <Property Name="DefectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DefectName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Inspections" Relationship="db_a9ffb8_murphysourceModel.FK_Inspection_Defect" FromRole="Defect" ToRole="Inspection" />
+        </EntityType>
+        <EntityType Name="Inspection">
+          <Key>
+            <PropertyRef Name="InspectionId" />
+          </Key>
+          <Property Name="InspectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InspectionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="AffectedPartId" Type="Int32" Nullable="false" />
+          <Property Name="ShiftId" Type="Int32" Nullable="false" />
+          <Property Name="AreaId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SerialNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AssemblyLineId" Type="Int32" Nullable="false" />
+          <Property Name="DefectId" Type="Int32" Nullable="false" />
+          <Property Name="LastModified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AffectedPart" Relationship="db_a9ffb8_murphysourceModel.FK_Inspection_AffectedPart" FromRole="Inspection" ToRole="AffectedPart" />
+          <NavigationProperty Name="Area" Relationship="db_a9ffb8_murphysourceModel.FK_Inspection_Area" FromRole="Inspection" ToRole="Area" />
+          <NavigationProperty Name="AssemblyLine" Relationship="db_a9ffb8_murphysourceModel.FK_Inspection_AssemblyLine" FromRole="Inspection" ToRole="AssemblyLine" />
+          <NavigationProperty Name="Defect" Relationship="db_a9ffb8_murphysourceModel.FK_Inspection_Defect" FromRole="Inspection" ToRole="Defect" />
+          <NavigationProperty Name="Shift" Relationship="db_a9ffb8_murphysourceModel.FK_Inspection_Shift" FromRole="Inspection" ToRole="Shift" />
+          <NavigationProperty Name="User" Relationship="db_a9ffb8_murphysourceModel.FK_Inspection_User" FromRole="Inspection" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Shift">
+          <Key>
+            <PropertyRef Name="ShiftId" />
+          </Key>
+          <Property Name="ShiftId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShiftName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Inspections" Relationship="db_a9ffb8_murphysourceModel.FK_Inspection_Shift" FromRole="Shift" ToRole="Inspection" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Inspections" Relationship="db_a9ffb8_murphysourceModel.FK_Inspection_User" FromRole="User" ToRole="Inspection" />
+        </EntityType>
+        <EntityType Name="InspectionSearch">
+          <Key>
+            <PropertyRef Name="InspectionId" />
+            <PropertyRef Name="InspectionDate" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ShiftId" />
+            <PropertyRef Name="ShiftName" />
+            <PropertyRef Name="AssemblyLineName" />
+            <PropertyRef Name="AssemblyLineId" />
+            <PropertyRef Name="AreaName" />
+            <PropertyRef Name="AreaId" />
+            <PropertyRef Name="DefectName" />
+            <PropertyRef Name="DefectId" />
+            <PropertyRef Name="AffectedPartName" />
+            <PropertyRef Name="AffectedPartId" />
+            <PropertyRef Name="SerialNumber" />
+            <PropertyRef Name="Quantity" />
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="InspectionId" Type="Int32" Nullable="false" />
+          <Property Name="InspectionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ShiftId" Type="Int32" Nullable="false" />
+          <Property Name="ShiftName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AssemblyLineName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AssemblyLineId" Type="Int32" Nullable="false" />
+          <Property Name="AreaName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AreaId" Type="Int32" Nullable="false" />
+          <Property Name="DefectName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DefectId" Type="Int32" Nullable="false" />
+          <Property Name="AffectedPartName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AffectedPartId" Type="Int32" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SerialNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="LastModified" Type="DateTime" Precision="3" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_AffectedPart_Area">
+          <End Type="db_a9ffb8_murphysourceModel.Area" Role="Area" Multiplicity="0..1" />
+          <End Type="db_a9ffb8_murphysourceModel.AffectedPart" Role="AffectedPart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="AreaId" />
+            </Principal>
+            <Dependent Role="AffectedPart">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inspection_AffectedPart">
+          <End Type="db_a9ffb8_murphysourceModel.AffectedPart" Role="AffectedPart" Multiplicity="1" />
+          <End Type="db_a9ffb8_murphysourceModel.Inspection" Role="Inspection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AffectedPart">
+              <PropertyRef Name="AffectedPartId" />
+            </Principal>
+            <Dependent Role="Inspection">
+              <PropertyRef Name="AffectedPartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inspection_Area">
+          <End Type="db_a9ffb8_murphysourceModel.Area" Role="Area" Multiplicity="1" />
+          <End Type="db_a9ffb8_murphysourceModel.Inspection" Role="Inspection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="AreaId" />
+            </Principal>
+            <Dependent Role="Inspection">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inspection_AssemblyLine">
+          <End Type="db_a9ffb8_murphysourceModel.AssemblyLine" Role="AssemblyLine" Multiplicity="1" />
+          <End Type="db_a9ffb8_murphysourceModel.Inspection" Role="Inspection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssemblyLine">
+              <PropertyRef Name="AssemblyLineId" />
+            </Principal>
+            <Dependent Role="Inspection">
+              <PropertyRef Name="AssemblyLineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inspection_Defect">
+          <End Type="db_a9ffb8_murphysourceModel.Defect" Role="Defect" Multiplicity="1" />
+          <End Type="db_a9ffb8_murphysourceModel.Inspection" Role="Inspection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Defect">
+              <PropertyRef Name="DefectId" />
+            </Principal>
+            <Dependent Role="Inspection">
+              <PropertyRef Name="DefectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inspection_Shift">
+          <End Type="db_a9ffb8_murphysourceModel.Shift" Role="Shift" Multiplicity="1" />
+          <End Type="db_a9ffb8_murphysourceModel.Inspection" Role="Inspection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shift">
+              <PropertyRef Name="ShiftId" />
+            </Principal>
+            <Dependent Role="Inspection">
+              <PropertyRef Name="ShiftId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inspection_User">
+          <End Type="db_a9ffb8_murphysourceModel.Users" Role="User" Multiplicity="1" />
+          <End Type="db_a9ffb8_murphysourceModel.Inspection" Role="Inspection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Inspection">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="db_a9ffb8_murphysourceModelStoreContainer" CdmEntityContainer="db_a9ffb8_murphysourceEntities">
+          <EntitySetMapping Name="AffectedParts">
+            <EntityTypeMapping TypeName="db_a9ffb8_murphysourceModel.AffectedPart">
+              <MappingFragment StoreEntitySet="AffectedPart">
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AffectedPartName" ColumnName="AffectedPartName" />
+                <ScalarProperty Name="AffectedPartId" ColumnName="AffectedPartId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Areas">
+            <EntityTypeMapping TypeName="db_a9ffb8_murphysourceModel.Area">
+              <MappingFragment StoreEntitySet="Area">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AssemblyLineId" ColumnName="AssemblyLineId" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssemblyLines">
+            <EntityTypeMapping TypeName="db_a9ffb8_murphysourceModel.AssemblyLine">
+              <MappingFragment StoreEntitySet="AssemblyLine">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AssemblyLineName" ColumnName="AssemblyLineName" />
+                <ScalarProperty Name="AssemblyLineId" ColumnName="AssemblyLineId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Defects">
+            <EntityTypeMapping TypeName="db_a9ffb8_murphysourceModel.Defect">
+              <MappingFragment StoreEntitySet="Defect">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DefectName" ColumnName="DefectName" />
+                <ScalarProperty Name="DefectId" ColumnName="DefectId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inspections">
+            <EntityTypeMapping TypeName="db_a9ffb8_murphysourceModel.Inspection">
+              <MappingFragment StoreEntitySet="Inspection">
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="DefectId" ColumnName="DefectId" />
+                <ScalarProperty Name="AssemblyLineId" ColumnName="AssemblyLineId" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
+                <ScalarProperty Name="AffectedPartId" ColumnName="AffectedPartId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="InspectionDate" ColumnName="InspectionDate" />
+                <ScalarProperty Name="InspectionId" ColumnName="InspectionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shifts">
+            <EntityTypeMapping TypeName="db_a9ffb8_murphysourceModel.Shift">
+              <MappingFragment StoreEntitySet="Shift">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ShiftName" ColumnName="ShiftName" />
+                <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="db_a9ffb8_murphysourceModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InspectionSearches">
+            <EntityTypeMapping TypeName="db_a9ffb8_murphysourceModel.InspectionSearch">
+              <MappingFragment StoreEntitySet="InspectionSearch">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="AffectedPartId" ColumnName="AffectedPartId" />
+                <ScalarProperty Name="AffectedPartName" ColumnName="AffectedPartName" />
+                <ScalarProperty Name="DefectId" ColumnName="DefectId" />
+                <ScalarProperty Name="DefectName" ColumnName="DefectName" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="AssemblyLineId" ColumnName="AssemblyLineId" />
+                <ScalarProperty Name="AssemblyLineName" ColumnName="AssemblyLineName" />
+                <ScalarProperty Name="ShiftName" ColumnName="ShiftName" />
+                <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="InspectionDate" ColumnName="InspectionDate" />
+                <ScalarProperty Name="InspectionId" ColumnName="InspectionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

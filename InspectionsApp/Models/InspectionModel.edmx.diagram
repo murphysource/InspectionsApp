@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="de94c3ab74ab414cbc1b8a5708332650" Name="Diagram1" ZoomLevel="90">
+        <EntityTypeShape EntityType="db_a9ffb8_murphysourceModel.AffectedPart" Width="1.5" PointX="3" PointY="2.25" />
+        <EntityTypeShape EntityType="db_a9ffb8_murphysourceModel.Area" Width="1.5" PointX="0.75" PointY="2.25" />
+        <EntityTypeShape EntityType="db_a9ffb8_murphysourceModel.AssemblyLine" Width="1.5" PointX="3" PointY="13.5" />
+        <EntityTypeShape EntityType="db_a9ffb8_murphysourceModel.Defect" Width="1.5" PointX="3" PointY="5.875" />
+        <EntityTypeShape EntityType="db_a9ffb8_murphysourceModel.Inspection" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="db_a9ffb8_murphysourceModel.Shift" Width="1.5" PointX="3" PointY="10.875" />
+        <EntityTypeShape EntityType="db_a9ffb8_murphysourceModel.Users" Width="1.5" PointX="3" PointY="8.375" />
+        <EntityTypeShape EntityType="db_a9ffb8_murphysourceModel.InspectionSearch" Width="1.5" PointX="5.75" PointY="6.75" />
+        <AssociationConnector Association="db_a9ffb8_murphysourceModel.FK_AffectedPart_Area" />
+        <AssociationConnector Association="db_a9ffb8_murphysourceModel.FK_Inspection_AffectedPart" />
+        <AssociationConnector Association="db_a9ffb8_murphysourceModel.FK_Inspection_Area" />
+        <AssociationConnector Association="db_a9ffb8_murphysourceModel.FK_Inspection_AssemblyLine" />
+        <AssociationConnector Association="db_a9ffb8_murphysourceModel.FK_Inspection_Defect" />
+        <AssociationConnector Association="db_a9ffb8_murphysourceModel.FK_Inspection_Shift" />
+        <AssociationConnector Association="db_a9ffb8_murphysourceModel.FK_Inspection_User" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

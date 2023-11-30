@@ -1,0 +1,105 @@
+﻿@model InspectionsApp.ViewModels.InspectionVM
+
+<table id="eliTable" class="table table-striped table-bordered table-hover nowrap no-footer dt-center" width="100%">
+    <thead>
+        <tr>
+            <th>InspectionId</th>
+            <th>InspectionDate</th>
+            <th>SerialNumber</th>
+            <th>AssemblyLineName</th>
+            <th>ShiftName</th>
+            <th>AreaName</th>
+            <th>DefectName</th>
+            <th>AffectedPartName</th>
+            <th>Comment</th>
+            <th>Quantity</th>
+            <th>UserName</th>
+            <th>LastModified</th>
+        </tr>
+    </thead>
+</table>
+<script>
+    var table;
+    var DateTime = luxon.DateTime;
+
+    $(".btnEdit").click(function () {
+        let args = $(this).prop('name');
+        window.location.href = `../Inspection/EditInspection?id=${args}`
+    });
+
+    $(document).ready(function () {
+        var startDate = $("#reportrange").data('daterangepicker').startDate.format('MM/DD/YYYY hh:mm a');
+        var endDate = $("#reportrange").data('daterangepicker').endDate.format('MM/DD/YYYY hh:mm a');
+        var userStartDate = new Date(startDate);
+        var userEndDate = new Date(endDate);
+        let t = DateTime.fromJSDate(userStartDate).toFormat('MM/dd/yyyy%20TT');
+        let f = DateTime.fromJSDate(userEndDate).toFormat('MM/dd/yyyy%20TT')
+        let s = $('#shiftDrop').val();
+        let al = $('#lineDrop').val();
+        let a = $('#areaDrop').val();
+        let ap = $('#partDrop').val();
+        let d = $('#defectDrop').val();
+        table = $('#eliTable').DataTable({
+            "ajax": {
+                "url": `/Inspection/GetInspectionData?dateStart=${t}&dateEnd=${f}&shiftId=${s}&assemblyLineId=${al}&areaId=${a}&affectedPartId=${ap}&defectId=${d}`,
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                {
+                    "data": "InspectionId",
+                    "name": "InspectionId",
+                    "title": "ID",
+                    "render": function (data) {
+                        return '<a href="../Inspection/EditInspection?id=' + data + '" target="_blank">' + data + '</a>';
+                    }
+                },
+                {
+                    "data": "InspectionDate",
+                    "title": "Inspection Date",
+                    "name": "InspectionDate",
+                    "render": function (data) {
+                        if (data != null) {
+                            var date = parseInt(data.substr(6));
+                            let dateTime = DateTime.fromMillis(date).toFormat("F");
+                            return dateTime;
+                        }
+                        else {
+                            return data;
+                        }
+                    }
+                },
+                { "data": "SerialNumber", "name": "SerialNumber", "title": "Serial Number" },
+                { "data": "AssemblyLineName", "name": "AssemblyLineName", "title": "Assembly Line" },
+                { "data": "ShiftName", "name": "ShiftName", "title": "Shift" },
+                { "data": "AreaName", "name": "AreaName", "title": "Area" },
+                { "data": "DefectName", "name": "DefectName", "title": "Defect" },
+                { "data": "AffectedPartName", "name": "AffectedPartName", "title": "Affected Part" },
+                { "data": "Comment", "name": "Comment" },
+                { "data": "UserName", "name": "UserName", "title": "Inspector" },
+                { "data": "Quantity", "name": "Quantity" },
+                {
+                    "data": "LastModified",
+                    "name": "LastModified",
+                    "title": "Last Modified",
+                    "render": function (data) {
+                        if (data != null) {
+                            var date = parseInt(data.substr(6));
+                            let dateTime = DateTime.fromMillis(date).toFormat("F");
+                            return dateTime;
+                        }
+                        else {
+                            return data;
+                        }
+                    }
+                },
+            ],
+            "order": [[0, "desc"]],
+            "scrollY": '500px',
+            "scrollX": true,
+            "scrollCollapse": true,
+            "serverSide": true,
+            "lengthMenu": [[500, 200, 100, 30000], [500, 200, 100, "All"]],
+        });
+    });
+</script>

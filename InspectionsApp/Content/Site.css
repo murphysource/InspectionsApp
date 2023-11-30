@@ -1,0 +1,50 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.daterangepicker select.hourselect, .daterangepicker select.minuteselect, .daterangepicker select.secondselect, .daterangepicker select.ampmselect, .daterangepicker .calendar-table {
+    background-color: #212529;
+    color: #ADB5BD;
+}
+
+
+.daterangepicker {
+    background-color: #212529;
+    color: #ADB5BD;
+}
+
+
+.daterangepicker td.off {
+    background-color: #343a40;
+    color: #ADB5BD;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
