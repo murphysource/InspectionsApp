@@ -65,7 +65,7 @@ namespace InspectionsApp.Controllers
             if (ModelState.IsValid)
             {
                 //Submit entry as Windows user, create user if does not exist
-                string windowsUsername = User.Identity.Name;
+                string windowsUsername = System.Web.HttpContext.Current.User.Identity.Name ?? "N/A";
 
                 // Split the domain and username in case the name comes in 'DOMAIN\username' format
                 if (windowsUsername.Contains("\\"))
